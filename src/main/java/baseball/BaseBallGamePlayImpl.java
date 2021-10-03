@@ -3,7 +3,9 @@ package baseball;
 import nextstep.utils.Console;
 import nextstep.utils.Randoms;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BaseBallGamePlayImpl implements IGamePlay {
@@ -29,6 +31,7 @@ public class BaseBallGamePlayImpl implements IGamePlay {
         continue;
       }
       PlayResult playResult = new PlayResult(intputBalls, balls);
+      printResult(playResult.getStrikeResult(), playResult.getBallResult());
       if (playResult.isComplete())
         return true;
     }
@@ -46,7 +49,17 @@ public class BaseBallGamePlayImpl implements IGamePlay {
     }
     return balls;
   }
-
+  private void printResult(Integer strikeResult, Integer ballResult) {
+    if(strikeResult == 0 && ballResult ==0){
+      System.out.println("낫싱");
+      return;
+    }
+    List<String> resultStr = Arrays.asList(
+        strikeResult > 0 ? String.format("%d스트라이크", strikeResult): "",
+        ballResult > 0 ? String.format("%d볼", ballResult): ""
+    );
+    System.out.println(String.join(" ", resultStr));
+  }
   @Override
   public Boolean askRetry() {
     return null;
