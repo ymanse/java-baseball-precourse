@@ -1,5 +1,8 @@
 package baseball;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class PlayResult {
@@ -22,11 +25,13 @@ public class PlayResult {
     return strikeResult.equals(3);
   }
 
-  public Integer getStrikeResult() {
-    return strikeResult;
-  }
-
-  public Integer getBallResult() {
-    return ballResult;
+  public String getResultString() {
+    List<String> resultStrList = new ArrayList<>();
+    if(strikeResult > 0) resultStrList.add(String.format("%d스트라이크", strikeResult));
+    if(ballResult > 0) resultStrList.add(String.format("%d볼", ballResult));
+    if (resultStrList.isEmpty()) {
+      return "낫싱";
+    }
+    return String.join(" ", resultStrList);
   }
 }

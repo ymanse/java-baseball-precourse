@@ -31,7 +31,7 @@ public class BaseBallGamePlayImpl implements IGamePlay {
         continue;
       }
       PlayResult playResult = new PlayResult(intputBalls, balls);
-      printResult(playResult.getStrikeResult(), playResult.getBallResult());
+      System.out.println(playResult.getResultString());
       if (playResult.isComplete())
         return true;
     }
@@ -49,17 +49,7 @@ public class BaseBallGamePlayImpl implements IGamePlay {
     }
     return balls;
   }
-  private void printResult(Integer strikeResult, Integer ballResult) {
-    if(strikeResult == 0 && ballResult ==0){
-      System.out.println("낫싱");
-      return;
-    }
-    List<String> resultStr = Arrays.asList(
-        strikeResult > 0 ? String.format("%d스트라이크", strikeResult): "",
-        ballResult > 0 ? String.format("%d볼", ballResult): ""
-    );
-    System.out.println(String.join(" ", resultStr));
-  }
+
   @Override
   public Boolean askRetry() {
     System.out.println("게임을새로시작하려면1,종료하려면2를입력하세요.");
