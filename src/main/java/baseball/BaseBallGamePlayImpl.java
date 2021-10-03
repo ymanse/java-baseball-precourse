@@ -11,7 +11,7 @@ import java.util.Map;
 public class BaseBallGamePlayImpl implements IGamePlay {
   static final Integer MinBall = 1;
   static final Integer MaxBall = 9;
-  Map<Integer, Integer> balls = new HashMap<>();
+  protected  Map<Integer, Integer> balls = new HashMap<>();
 
   @Override
   public void init() {
@@ -25,11 +25,8 @@ public class BaseBallGamePlayImpl implements IGamePlay {
   @Override
   public Boolean runPlay() {
     while (true) {
-      Map<Integer, Integer> intputBalls = readInputBall();
-      if (intputBalls.size() != 3) {
-        System.out.println("Error : 입력값 오류");
-        continue;
-      }
+      Map<Integer, Integer> intputBalls = getInputBalls();
+      if (intputBalls == null) continue;
       PlayResult playResult = new PlayResult(intputBalls, balls);
       System.out.println(playResult.getResultString());
       if (playResult.isComplete())
@@ -37,14 +34,25 @@ public class BaseBallGamePlayImpl implements IGamePlay {
     }
   }
 
-  private Map<Integer, Integer> readInputBall() {
+  protected Map<Integer, Integer> getInputBalls() {
     System.out.print("숫자를입력해주세요: ");
-    Map<Integer, Integer> balls = new HashMap<>();
     String strInputs = Console.readLine();
-    for (int i = 0; i < 3; i++) {
+    Map<Integer, Integer> intputBalls = convertInputBalls(strInputs);
+    if (intputBalls.size() != 3) {
+      System.out.println("Error : 입력값 오류");
+      return null;
+    }
+    return intputBalls;
+  }
+
+  protected Map<Integer, Integer> convertInputBalls(String strInputs) {
+    Map<Integer, Integer> balls = new HashMap<>();
+    if(strInputs.length() != 3) return balls;
+    for (int i = 0; i < strInputs.length(); i++) {
       char c = strInputs.charAt(i);
-      if (!Character.isDigit(c))
-        continue;
+      if (!Character.isDigit(c)){
+        return new HashMap<>();
+      }
       balls.put(Character.getNumericValue(c), i + 1);
     }
     return balls;

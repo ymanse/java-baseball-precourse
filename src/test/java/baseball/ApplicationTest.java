@@ -38,6 +38,16 @@ public class ApplicationTest extends NSTest {
         }
     }
 
+    @Test
+    void 잘못된_입력값() {
+        try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
+            mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+                .thenReturn(7, 1, 3);
+            run("777", "7AB", "712", "713", "2");
+            verify("Error : 입력값 오류", "Error : 입력값 오류", "2스트라이크", "3스트라이크");
+        }
+    }
+
     @AfterEach
     void tearDown() {
         outputStandard();
