@@ -62,6 +62,14 @@ public class BaseBallGamePlayImpl implements IGamePlay {
   }
   @Override
   public Boolean askRetry() {
-    return null;
+    System.out.println("게임을새로시작하려면1,종료하려면2를입력하세요.");
+    String s = Console.readLine();
+    if (s.equals("1")) {
+      return true;
+    }
+    if (s.equals("2")) {
+      return false;
+    }
+    return false;
   }
 }
