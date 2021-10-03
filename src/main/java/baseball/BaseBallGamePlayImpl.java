@@ -28,8 +28,9 @@ public class BaseBallGamePlayImpl implements IGamePlay {
         System.out.println("Error : 입력값 오류");
         continue;
       }
-
-      return true;
+      PlayResult playResult = new PlayResult(intputBalls, balls);
+      if (playResult.isComplete())
+        return true;
     }
   }
 
