@@ -1,5 +1,6 @@
 package baseball;
 
+import nextstep.utils.Console;
 import nextstep.utils.Randoms;
 
 import java.util.HashMap;
@@ -21,7 +22,28 @@ public class BaseBallGamePlayImpl implements IGamePlay {
 
   @Override
   public Boolean runPlay() {
-    return null;
+    while (true) {
+      Map<Integer, Integer> intputBalls = readInputBall();
+      if (intputBalls.size() != 3) {
+        System.out.println("Error : 입력값 오류");
+        continue;
+      }
+
+      return true;
+    }
+  }
+
+  private Map<Integer, Integer> readInputBall() {
+    System.out.print("숫자를입력해주세요: ");
+    Map<Integer, Integer> balls = new HashMap<>();
+    String strInputs = Console.readLine();
+    for (int i = 0; i < 3; i++) {
+      char c = strInputs.charAt(i);
+      if (!Character.isDigit(c))
+        continue;
+      balls.put(Character.getNumericValue(c), i + 1);
+    }
+    return balls;
   }
 
   @Override
