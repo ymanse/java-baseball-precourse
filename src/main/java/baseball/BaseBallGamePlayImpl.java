@@ -3,21 +3,19 @@ package baseball;
 import nextstep.utils.Console;
 import nextstep.utils.Randoms;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import static baseball.BaseBallGameConst.*;
+
 public class BaseBallGamePlayImpl implements IGamePlay {
-  static final Integer MinBall = 1;
-  static final Integer MaxBall = 9;
   protected  Map<Integer, Integer> balls = new HashMap<>();
 
   @Override
   public void init() {
     balls.clear();
-    while (balls.size() < 3) {
-      Integer ball = Randoms.pickNumberInRange(MinBall, MaxBall);
+    while (balls.size() < MAX_BALL_COUNT) {
+      Integer ball = Randoms.pickNumberInRange(MIN_BALL, MAX_BALL);
       balls.putIfAbsent(ball, balls.size() + 1);
     }
   }
@@ -38,7 +36,7 @@ public class BaseBallGamePlayImpl implements IGamePlay {
     System.out.print("숫자를입력해주세요: ");
     String strInputs = Console.readLine();
     Map<Integer, Integer> intputBalls = convertInputBalls(strInputs);
-    if (intputBalls.size() != 3) {
+    if (intputBalls.size() != MAX_BALL_COUNT) {
       System.out.println("Error : 입력값 오류");
       return null;
     }
@@ -47,7 +45,7 @@ public class BaseBallGamePlayImpl implements IGamePlay {
 
   protected Map<Integer, Integer> convertInputBalls(String strInputs) {
     Map<Integer, Integer> balls = new HashMap<>();
-    if(strInputs.length() != 3) return balls;
+    if(strInputs.length() != MAX_BALL_COUNT) return balls;
     for (int i = 0; i < strInputs.length(); i++) {
       char c = strInputs.charAt(i);
       if (!Character.isDigit(c)){

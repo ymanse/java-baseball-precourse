@@ -22,7 +22,7 @@ public class PlayResult {
   }
 
   public boolean isComplete() {
-    return strikeResult.equals(3);
+    return strikeResult.equals(MAX_BALL_COUNT);
   }
 
   public String getResultString() {
