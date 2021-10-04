@@ -44,7 +44,7 @@ public class ApplicationTest extends NSTest {
             mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
                 .thenReturn(7, 1, 3);
             run("777", "7AB", "712", "713", "2");
-            verify("Error : 입력값 오류", "Error : 입력값 오류", "2스트라이크", "3스트라이크");
+            verify("[ERROR] : 중복값 입력", "[ERROR] : 숫자가 아닌 입력값", "2스트라이크", "3스트라이크");
         }
     }
 

@@ -5,6 +5,7 @@ import nextstep.utils.Randoms;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.BooleanSupplier;
 
 import static baseball.BaseBallGameConst.*;
@@ -31,20 +32,23 @@ public class BaseBallGamePlayImpl implements IGamePlay {
         if (playResult.isComplete())
           return true;
       }
-      catch (Exception e){
+      catch (NoSuchElementException e){
+        throw e;
+      }
+      catch (IllegalArgumentException e){
         System.out.println(e.getMessage());
       }
     }
   }
 
-  protected Map<Integer, Integer> getInputBalls() throws Exception {
+  protected Map<Integer, Integer> getInputBalls() throws IllegalArgumentException {
     System.out.print("숫자를입력해주세요: ");
     String strInputs = Console.readLine();
     Map<Integer, Integer> intputBalls = convertInputBalls(strInputs);
     return intputBalls;
   }
 
-  protected Map<Integer, Integer> convertInputBalls(String strInputs) throws Exception {
+  protected Map<Integer, Integer> convertInputBalls(String strInputs) throws IllegalArgumentException {
     Map<Integer, Integer> balls = new HashMap<>();
     validationThrowException(()->strInputs.length() != MAX_BALL_COUNT, "[ERROR] : 입력값 개수 에러");
     for (int i = 0; i < strInputs.length(); i++) {
@@ -56,9 +60,9 @@ public class BaseBallGamePlayImpl implements IGamePlay {
     return balls;
   }
 
-  private void validationThrowException(BooleanSupplier supplier, String s) throws Exception {
+  private void validationThrowException(BooleanSupplier supplier, String s) throws IllegalArgumentException {
     if (supplier.getAsBoolean())
-      throw new Exception(s);
+      throw new IllegalArgumentException(s);
   }
 
   @Override
