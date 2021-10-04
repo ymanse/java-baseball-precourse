@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,7 +89,7 @@ class BaseBallGamePlayImplTest {
   }
 
   @Test
-  void convertInputBalls() {
+  void convertInputBalls() throws Exception {
     BaseBallGamePlayImpl play = new BaseBallGamePlayImpl();
     Map<Integer, Integer> integerIntegerMap = play.convertInputBalls("713");
     assertThat(integerIntegerMap).isEqualTo(new HashMap<Integer, Integer>(){{
@@ -100,27 +102,32 @@ class BaseBallGamePlayImplTest {
   @Test
   void convertInputBalls_duplicateValue() {
     BaseBallGamePlayImpl play = new BaseBallGamePlayImpl();
-    Map<Integer, Integer> integerIntegerMap = play.convertInputBalls("711");
-    assertThat(integerIntegerMap.size()).isEqualTo(2);
+    assertThatThrownBy(() -> { play.convertInputBalls("711"); })
+        .isInstanceOf(Exception.class)
+        .hasMessageContaining("[ERROR] : 중복값 입력");
   }
   @Test
   void convertInputBalls_wrongValue() {
     BaseBallGamePlayImpl play = new BaseBallGamePlayImpl();
     {
-      Map<Integer, Integer> integerIntegerMap = play.convertInputBalls("7a1");
-      assertThat(integerIntegerMap.size()).isEqualTo(0);
+      assertThatThrownBy(() -> { play.convertInputBalls("7a1"); })
+          .isInstanceOf(Exception.class)
+          .hasMessageContaining("[ERROR] : 숫자가 아닌 입력값");
     }
     {
-      Map<Integer, Integer> integerIntegerMap = play.convertInputBalls("71");
-      assertThat(integerIntegerMap.size()).isEqualTo(0);
+      assertThatThrownBy(() -> { play.convertInputBalls("71"); })
+          .isInstanceOf(Exception.class)
+          .hasMessageContaining("[ERROR] : 입력값 개수 에러");
     }
     {
-      Map<Integer, Integer> integerIntegerMap = play.convertInputBalls("7123");
-      assertThat(integerIntegerMap.size()).isEqualTo(0);
+      assertThatThrownBy(() -> { play.convertInputBalls("7123"); })
+          .isInstanceOf(Exception.class)
+          .hasMessageContaining("[ERROR] : 입력값 개수 에러");
     }
     {
-      Map<Integer, Integer> integerIntegerMap = play.convertInputBalls("712a");
-      assertThat(integerIntegerMap.size()).isEqualTo(0);
+      assertThatThrownBy(() -> { play.convertInputBalls("712a"); })
+          .isInstanceOf(Exception.class)
+          .hasMessageContaining("[ERROR] : 입력값 개수 에러");
     }
   }
 }

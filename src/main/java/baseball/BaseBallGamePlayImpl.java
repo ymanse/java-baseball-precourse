@@ -5,6 +5,7 @@ import nextstep.utils.Randoms;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import static baseball.BaseBallGameConst.*;
 
@@ -23,37 +24,41 @@ public class BaseBallGamePlayImpl implements IGamePlay {
   @Override
   public Boolean runPlay() {
     while (true) {
-      Map<Integer, Integer> intputBalls = getInputBalls();
-      if (intputBalls == null) continue;
-      PlayResult playResult = new PlayResult(intputBalls, balls);
-      System.out.println(playResult.getResultString());
-      if (playResult.isComplete())
-        return true;
+      try {
+        Map<Integer, Integer> intputBalls = getInputBalls();
+        PlayResult playResult = new PlayResult(intputBalls, balls);
+        System.out.println(playResult.getResultString());
+        if (playResult.isComplete())
+          return true;
+      }
+      catch (Exception e){
+        System.out.println(e.getMessage());
+      }
     }
   }
 
-  protected Map<Integer, Integer> getInputBalls() {
+  protected Map<Integer, Integer> getInputBalls() throws Exception {
     System.out.print("숫자를입력해주세요: ");
     String strInputs = Console.readLine();
     Map<Integer, Integer> intputBalls = convertInputBalls(strInputs);
-    if (intputBalls.size() != MAX_BALL_COUNT) {
-      System.out.println("Error : 입력값 오류");
-      return null;
-    }
     return intputBalls;
   }
 
-  protected Map<Integer, Integer> convertInputBalls(String strInputs) {
+  protected Map<Integer, Integer> convertInputBalls(String strInputs) throws Exception {
     Map<Integer, Integer> balls = new HashMap<>();
-    if(strInputs.length() != MAX_BALL_COUNT) return balls;
+    validationThrowException(()->strInputs.length() != MAX_BALL_COUNT, "[ERROR] : 입력값 개수 에러");
     for (int i = 0; i < strInputs.length(); i++) {
       char c = strInputs.charAt(i);
-      if (!Character.isDigit(c)){
-        return new HashMap<>();
-      }
+      validationThrowException(()->!Character.isDigit(c), "[ERROR] : 숫자가 아닌 입력값");
       balls.put(Character.getNumericValue(c), i + 1);
     }
+    validationThrowException(()->balls.size() != MAX_BALL_COUNT, "[ERROR] : 중복값 입력");
     return balls;
+  }
+
+  private void validationThrowException(BooleanSupplier supplier, String s) throws Exception {
+    if (supplier.getAsBoolean())
+      throw new Exception(s);
   }
 
   @Override
